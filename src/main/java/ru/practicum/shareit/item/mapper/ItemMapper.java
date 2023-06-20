@@ -40,8 +40,7 @@ public class ItemMapper {
     public static ItemDto toDto(Item item,
                                 Booking lastBooking,
                                 Booking nextBooking,
-                                List<CommentDto> comments
-    ) {
+                                List<CommentDto> comments) {
         return ItemDto.builder()
                 .id(item.getId())
                 .name(item.getName())
@@ -55,8 +54,7 @@ public class ItemMapper {
     }
 
     public static ItemDto toDto(Item item,
-                                List<CommentDto> comments
-    ) {
+                                List<CommentDto> comments) {
         return ItemDto.builder()
                 .id(item.getId())
                 .name(item.getName())

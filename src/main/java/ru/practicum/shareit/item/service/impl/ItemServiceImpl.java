@@ -27,7 +27,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
-  
+
     private final ItemRepository itemRepository;
     private final BookingRepository bookingRepository;
     private final UserService userService;
@@ -48,7 +48,6 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(String.format("Item with id='%s' not found", id)));
         List<Comment> comments = commentRepository.findByItemId(id);
-
 
         if (item.getOwner().getId().equals(userId)) {
             LocalDateTime now = LocalDateTime.now();
@@ -112,6 +111,7 @@ public class ItemServiceImpl implements ItemService {
         return result;
     }
 
+    @Override
     public List<ItemDto> searchByText(String text, Long userId) {
         if (!StringUtils.hasLength(text)) {
             return Collections.emptyList();

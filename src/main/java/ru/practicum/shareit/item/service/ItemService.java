@@ -16,5 +16,6 @@ public interface ItemService {
     List<ItemDto> getAllByUserId(Long userId);
 
     List<ItemDto> searchByText(String text, Long userId);
+
     CommentDto createComment(CommentDto dto, Long itemId, Long userId) throws CommentException;
 }

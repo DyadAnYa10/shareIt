@@ -31,25 +31,28 @@ public class BookingController {
 
     @PatchMapping("{bookingId}")
     public BookingGetDto changeStatusOfBookingByOwner(@RequestHeader("X-Sharer-User-Id") long userId,
-                                                   @PathVariable long bookingId,
-                                                   @RequestParam("approved") boolean approved)
+                                                      @PathVariable long bookingId,
+                                                      @RequestParam("approved") boolean approved)
             throws UserExistsException, BookingExistsException, UserConflictException, BookingStatusUpdateException {
         return bookingService.changeStatusOfBookingByOwner(bookingId, userId, approved);
     }
+
     @GetMapping("{bookingId}")
     public BookingGetDto getBooking(@RequestHeader("X-Sharer-User-Id") long userId,
-                                 @PathVariable long bookingId) throws UserExistsException, BookingExistsException {
+                                    @PathVariable long bookingId) throws UserExistsException, BookingExistsException {
         return bookingService.getBooking(bookingId, userId);
     }
+
     @GetMapping()
     public List<BookingGetDto> getAllBookingsByUser(@RequestHeader("X-Sharer-User-Id") long userId,
                                                     @RequestParam(value = "state", defaultValue = "ALL") String state)
             throws UserExistsException, BookingStateException {
         return bookingService.getAllBookingsByUser(state, userId);
     }
+
     @GetMapping("/owner")
     public List<BookingGetDto> getAllBookingsByUserError(@RequestHeader("X-Sharer-User-Id") long userId,
-                                           @RequestParam(value = "state", defaultValue = "ALL") String state)
+                                                         @RequestParam(value = "state", defaultValue = "ALL") String state)
             throws ItemExistsException, BookingStateException {
         return bookingService.getAllBookingsByOwner(state, userId);
     }
