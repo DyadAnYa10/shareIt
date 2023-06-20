@@ -36,11 +36,8 @@ public class ItemMapper {
                 .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
     }
-  
-    public static ItemDto toDto(Item item,
-                                Booking lastBooking,
-                                Booking nextBooking,
-                                List<CommentDto> comments) {
+
+    public static ItemDto toDto(Item item, Booking lastBooking, Booking nextBooking, List<CommentDto> comments) {
         return ItemDto.builder()
                 .id(item.getId())
                 .name(item.getName())
@@ -53,8 +50,7 @@ public class ItemMapper {
                 .build();
     }
 
-    public static ItemDto toDto(Item item,
-                                List<CommentDto> comments) {
+    public static ItemDto toDto(Item item, List<CommentDto> comments) {
         return ItemDto.builder()
                 .id(item.getId())
                 .name(item.getName())
