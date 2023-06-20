@@ -65,6 +65,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(response);
     }
+
     @ExceptionHandler(value = CommentException.class)
     public ResponseEntity<Object> handleExistEmailException(final CommentException ex) {
         Map<String, Object> response = new HashMap<>();

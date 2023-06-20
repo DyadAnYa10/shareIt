@@ -36,8 +36,7 @@ public class ItemMapper {
                 .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
     }
-
-    //todo
+  
     public static ItemDto toDto(Item item,
                                 Booking lastBooking,
                                 Booking nextBooking,

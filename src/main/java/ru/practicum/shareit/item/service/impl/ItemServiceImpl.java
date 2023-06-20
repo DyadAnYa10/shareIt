@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
@@ -26,6 +27,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
+  
     private final ItemRepository itemRepository;
     private final BookingRepository bookingRepository;
     private final UserService userService;
@@ -53,6 +55,7 @@ public class ItemServiceImpl implements ItemService {
             return constructItemDtoForOwner(item, now, CommentMapper.toDtoList(comments));
         }
         return ItemMapper.toDto(item, null, null, CommentMapper.toDtoList(comments));
+
     }
 
     @Override
@@ -75,6 +78,7 @@ public class ItemServiceImpl implements ItemService {
         if ((itemDto.getAvailable() != null)) {
             foundItem.setAvailable(itemDto.getAvailable());
         }
+
         List<Comment> comments = commentRepository.findByItemId(id);
         itemRepository.save(foundItem);
         return ItemMapper.toDto(foundItem, CommentMapper.toDtoList(comments));

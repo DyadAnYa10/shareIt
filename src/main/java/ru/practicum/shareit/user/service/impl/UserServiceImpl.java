@@ -14,12 +14,12 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
 
     @Override
     public UserDto create(UserDto userDto) {
@@ -45,7 +45,6 @@ public class UserServiceImpl implements UserService {
         if (userDto.getName() != null) {
             foundUser.setName(userDto.getName());
         }
-
         return UserMapper.toUserDto(userRepository.save(foundUser));
     }
 
