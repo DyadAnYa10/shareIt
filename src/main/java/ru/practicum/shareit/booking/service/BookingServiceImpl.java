@@ -126,7 +126,7 @@ public class BookingServiceImpl implements BookingService {
 
         switch (bookingState) {
             case ALL:
-                bookingList = bookingRepository.findByBookerId(userId);
+                bookingList = bookingRepository.findByBookerIdOrderByStartDesc(userId);
                 break;
             case PAST:
                 bookingList = bookingRepository.findByBookerIdAndEndIsBefore(userId, LocalDateTime.now());
