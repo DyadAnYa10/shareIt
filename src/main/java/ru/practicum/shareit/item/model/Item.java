@@ -23,7 +23,7 @@ public class Item {
     private String description;
     @Column(name = "is_available")
     private Boolean available;
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     private User owner;
 
     public Item(String name, String description, Boolean available, User owner) {

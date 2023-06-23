@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.practicum.shareit.Create;
+import ru.practicum.shareit.utils.Create;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;

@@ -28,7 +28,7 @@ public class Booking {
     private LocalDateTime end;
     @ManyToOne
     private Item item;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User booker;
     @Enumerated(EnumType.STRING)
     private BookingStatus status;

@@ -18,9 +18,9 @@ public class Comment {
     private long id;
     @Column(name = "text")
     private String text;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Item item;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User author;
     @Column(name = "created")
     private LocalDateTime created;

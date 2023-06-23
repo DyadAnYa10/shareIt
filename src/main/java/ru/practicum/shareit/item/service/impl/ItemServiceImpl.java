@@ -152,8 +152,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public CommentDto createComment(CommentDto dto, Long itemId, Long userId) throws CommentException {
-        if (dto.getText().isBlank())
+        if (dto.getText().isBlank()) {
             throw new CommentException("Ошибка: пустой комментарий");
+        }
         Item item = itemRepository.findById(itemId).orElseThrow();
         User author = userService.findUserById(userId);
 

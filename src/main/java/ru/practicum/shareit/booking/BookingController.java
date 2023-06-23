@@ -1,6 +1,7 @@
 package ru.practicum.shareit.booking;
 
-import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.exception.BookingCreateException;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/bookings")
-@Data
+@RequiredArgsConstructor
 public class BookingController {
     private final BookingService bookingService;
 
