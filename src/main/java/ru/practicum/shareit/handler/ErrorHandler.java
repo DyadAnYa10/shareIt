@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import ru.practicum.shareit.item.exception.CommentException;
 import ru.practicum.shareit.item.exception.OwnerItemException;
 import ru.practicum.shareit.user.exception.ExistEmailException;
 
@@ -65,21 +66,19 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
                 .body(response);
     }
 
-
-    @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<Object> handleException(final Exception ex) {
+    @ExceptionHandler(value = CommentException.class)
+    public ResponseEntity<Object> handleExistEmailException(final CommentException ex) {
         Map<String, Object> response = new HashMap<>();
 
         response.put("timestamp", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.name());
-        response.put("message", "Непредвиденная ошибка: " + ex.getMessage());
+        response.put("status", HttpStatus.BAD_REQUEST.name());
+        response.put("message", ex.getMessage());
 
         log.error(ex.getMessage());
 
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .status(HttpStatus.BAD_REQUEST)
                 .body(response);
     }
-
 }
 

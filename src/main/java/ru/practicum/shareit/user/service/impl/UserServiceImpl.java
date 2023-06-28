@@ -6,24 +6,23 @@ import ru.practicum.shareit.user.exception.ExistEmailException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.repository.InMemoryUserRepository;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final InMemoryUserRepository userRepository;
-
+    private final UserRepository userRepository;
 
     @Override
     public UserDto create(UserDto userDto) {
-        checkExistEmail(userDto.getEmail());
-
         User newUser = UserMapper.toUser(userDto);
         return UserMapper.toUserDto(userRepository.save(newUser));
     }
@@ -46,8 +45,7 @@ public class UserServiceImpl implements UserService {
         if (userDto.getName() != null) {
             foundUser.setName(userDto.getName());
         }
-
-        return UserMapper.toUserDto(userRepository.updateById(foundUser, userId));
+        return UserMapper.toUserDto(userRepository.save(foundUser));
     }
 
     @Override
@@ -70,7 +68,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkExistEmail(String email) {
-        if (userRepository.isExistEmail(email)) {
+        Optional<User> userFromBD = userRepository.findUserByEmail(email);
+        if (userFromBD.isPresent()) {
             String error = String.format("Email %s already exist", email);
             throw new ExistEmailException(error);
         }
