@@ -26,7 +26,6 @@ public class ItemDto {
 
     private User owner;
 
-//    private Long request;
 
     private BookingGetItemDto lastBooking;
     private BookingGetItemDto nextBooking;

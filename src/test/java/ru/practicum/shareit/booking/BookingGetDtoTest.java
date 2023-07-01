@@ -8,7 +8,9 @@ import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.json.JsonContent;
 import ru.practicum.shareit.booking.dto.BookingGetDto;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
@@ -28,8 +30,8 @@ class BookingGetDtoTest {
                 .id(1L)
                 .start(start)
                 .end(end)
-                .item(new Item(1L, "itemName"))
-                .booker(new User(1L, "userName"))
+                .item(new ItemDto(1L, "itemName", "description", true, null, null, null, null, null))
+                .booker(new UserDto(1L, "userName", "dfgh@bk.ru"))
                 .status(BookingStatus.APPROVED)
                 .build();
 

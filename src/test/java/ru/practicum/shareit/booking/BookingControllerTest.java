@@ -13,7 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingGetDto;
 import ru.practicum.shareit.booking.service.BookingService;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 
 import java.nio.charset.StandardCharsets;
@@ -85,8 +87,8 @@ class BookingControllerTest {
                 .id(1L)
                 .start(LocalDateTime.now().plusHours(1))
                 .end(LocalDateTime.now().plusHours(2))
-                .booker(new User(1L, "user"))
-                .item(new Item(1L, "item"))
+                .booker(new UserDto(1L, "user", "email@email.com"))
+                .item(new ItemDto(1L, "item","description", true, null, null, null, null, null))
                 .status(BookingStatus.WAITING)
                 .build();
 
