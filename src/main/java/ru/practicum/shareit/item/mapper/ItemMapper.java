@@ -6,7 +6,6 @@ import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.request.RequestService;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
@@ -36,6 +35,7 @@ public class ItemMapper {
                 .available(itemDto.getAvailable())
                 .build();
     }
+
     public static Item toItem(ItemDto itemDto, ItemRequest itemRequest) {
         return Item.builder()
                 .name(itemDto.getName())

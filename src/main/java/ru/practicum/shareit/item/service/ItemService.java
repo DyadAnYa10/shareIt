@@ -14,6 +14,7 @@ public interface ItemService {
     ItemDto updateById(ItemDto itemDto, Long id, Long userId);
 
     List<ItemDto> getAllByUserId(int from, int size, long userId);
+
     List<ItemDto> getAllByUserId(long userId);
 
     List<ItemDto> searchByText(String text, int from, int size);

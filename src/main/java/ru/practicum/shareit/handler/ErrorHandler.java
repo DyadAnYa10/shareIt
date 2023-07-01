@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.practicum.shareit.item.exception.CommentException;
 import ru.practicum.shareit.item.exception.OwnerItemException;
-import ru.practicum.shareit.request.exception.EntityNotExistException;
 import ru.practicum.shareit.request.exception.RequestException;
 import ru.practicum.shareit.user.exception.ExistEmailException;
 
@@ -82,6 +81,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(response);
     }
+
     @ExceptionHandler(value = RequestException.class)
     public ResponseEntity<Object> handleRequestException(final RequestException ex) {
         Map<String, Object> response = new HashMap<>();

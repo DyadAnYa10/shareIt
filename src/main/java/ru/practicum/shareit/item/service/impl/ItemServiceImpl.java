@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -162,7 +161,7 @@ public class ItemServiceImpl implements ItemService {
         if (!StringUtils.hasLength(text)) {
             return Collections.emptyList();
         }
-        PageRequest pageRequest = PageRequest.of(from/size,size);
+        PageRequest pageRequest = PageRequest.of(from / size, size);
         return itemRepository.searchItemsByText(text, pageRequest).stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
 
