@@ -19,11 +19,15 @@ public class User {
     private Long id;
     @Column(name = "name")
     private String name;
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     public User(String name, String email) {
         this.name = name;
         this.email = email;
+    }
+    public User(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 }

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
+@Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,8 +28,10 @@ public class Booking {
     @Column(name = "end_date")
     private LocalDateTime end;
     @ManyToOne
+    @JoinColumn(name = "item_id")
     private Item item;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "booker_id")
     private User booker;
     @Enumerated(EnumType.STRING)
     private BookingStatus status;

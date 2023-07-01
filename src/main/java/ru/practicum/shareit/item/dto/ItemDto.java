@@ -8,8 +8,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class ItemDto {
     private Long id;
@@ -25,9 +26,10 @@ public class ItemDto {
 
     private User owner;
 
-    private Long request;
+//    private Long request;
 
     private BookingGetItemDto lastBooking;
     private BookingGetItemDto nextBooking;
     private List<CommentDto> comments;
+    private Long requestId;
 }

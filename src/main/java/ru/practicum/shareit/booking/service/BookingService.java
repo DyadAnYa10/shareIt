@@ -19,7 +19,7 @@ public interface BookingService {
 
     BookingGetDto getBooking(long bookingId, long userId) throws UserExistsException, BookingExistsException;
 
-    List<BookingGetDto> getAllBookingsByUser(String state, long userId) throws UserExistsException, BookingStateException;
+    List<BookingGetDto> getAllBookingsByUser(int from, int size, String state, long userId) throws UserExistsException, BookingStateException;
 
-    List<BookingGetDto> getAllBookingsByOwner(String state, long userId) throws ItemExistsException, BookingStateException;
+    List<BookingGetDto> getAllBookingsByOwner(int from, int size, String state, long userId) throws ItemExistsException, BookingStateException;
 }
