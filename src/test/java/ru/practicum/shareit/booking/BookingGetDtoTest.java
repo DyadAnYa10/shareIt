@@ -24,16 +24,16 @@ class BookingGetDtoTest {
     void bookingDtoTest() {
         LocalDateTime start = LocalDateTime.now().plusHours(1);
         LocalDateTime end = start.plusHours(1);
-        BookingGetDto bookingGetDto = BookingGetDto.builder()
+        BookingGetDto bookingDto = BookingGetDto.builder()
                 .id(1L)
                 .start(start)
                 .end(end)
-                .item(new ItemDto(1L, "itemName", "description", true, null, null, null, null, null))
-                .booker(new UserDto(1L, "userName", "dfgh@bk.ru"))
+                .booker(new UserDto(1L, "userName", "email@email.com"))
+                .item(new ItemDto(1L, "itemName", "item_description", true))
                 .status(BookingStatus.APPROVED)
                 .build();
 
-        Optional<JsonContent<BookingGetDto>> result = Optional.of(json.write(bookingGetDto));
+        Optional<JsonContent<BookingGetDto>> result = Optional.of(json.write(bookingDto));
 
         Assertions.assertThat(result)
                 .isPresent()

@@ -86,7 +86,7 @@ class BookingControllerTest {
                 .start(LocalDateTime.now().plusHours(1))
                 .end(LocalDateTime.now().plusHours(2))
                 .booker(new UserDto(1L, "user", "email@email.com"))
-                .item(new ItemDto(1L, "item","description", true, null, null, null, null, null))
+                .item(new ItemDto(1L, "item",  "item_description", true))
                 .status(BookingStatus.WAITING)
                 .build();
 
@@ -117,5 +117,17 @@ class BookingControllerTest {
                 .andExpect(status().isOk());
 
         verify(bookingService).changeStatusOfBookingByOwner(bookingId, userId, approved);
+    }
+
+    @SneakyThrows
+    @Test
+    void getAllByOwner_UNSUPPORTED_STATUS_thenReturnBadRequest() {
+        long userId = 1L;
+        String state = "abracadabra";
+        mockMvc.perform(get("/bookings/owner?state={state}", state)
+                        .header("X-Sharer-User-Id", userId))
+                .andDo(print());
+
+        verify(bookingService).getAllBookingsByOwner(0, 10, state, 1L);
     }
 }

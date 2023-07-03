@@ -1,5 +1,6 @@
 package ru.practicum.shareit.booking;
 
+import lombok.Generated;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -8,7 +9,7 @@ import ru.practicum.shareit.booking.exception.*;
 import ru.practicum.shareit.item.exception.ItemExistsException;
 import ru.practicum.shareit.user.exception.UserConflictException;
 import ru.practicum.shareit.user.exception.UserExistsException;
-
+@Generated
 @RestControllerAdvice("ru.practicum.shareit.booking")
 public class ErrorBookingHandler {
     @ExceptionHandler

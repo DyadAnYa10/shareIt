@@ -14,6 +14,8 @@ import ru.practicum.shareit.item.exception.ItemExistsException;
 import ru.practicum.shareit.user.exception.UserConflictException;
 import ru.practicum.shareit.user.exception.UserExistsException;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -46,8 +48,8 @@ public class BookingController {
 
     @GetMapping()
     public List<BookingGetDto> getAllBookingsByUser(@RequestHeader("X-Sharer-User-Id") long userId,
-                                                    @RequestParam(defaultValue = "0") int from,
-                                                    @RequestParam(defaultValue = "10")  int size,
+                                                    @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                                    @RequestParam(defaultValue = "10") @Positive int size,
                                                     @RequestParam(value = "state", defaultValue = "ALL") String state)
             throws UserExistsException, BookingStateException {
         return bookingService.getAllBookingsByUser(from, size, state, userId);
@@ -57,8 +59,8 @@ public class BookingController {
     @GetMapping("/owner")
     public List<BookingGetDto> getAllBookingsByUserError(@RequestHeader("X-Sharer-User-Id") long userId,
                                                          @RequestParam(value = "state", defaultValue = "ALL") String state,
-                                                         @RequestParam(defaultValue = "0") int from,
-                                                         @RequestParam(defaultValue = "10") int size)
+                                                         @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                                         @RequestParam(defaultValue = "10") @Positive int size)
             throws ItemExistsException, BookingStateException {
         return bookingService.getAllBookingsByOwner(from, size, state, userId);
     }

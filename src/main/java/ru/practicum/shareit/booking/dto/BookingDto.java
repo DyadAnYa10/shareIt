@@ -19,6 +19,6 @@ public class BookingDto {
     @Future
     private LocalDateTime start;
     @Future
-    @NotNull(groups = { Update.class})
+    @NotNull(groups = {Update.class})
     private LocalDateTime end;
 }

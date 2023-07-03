@@ -38,11 +38,8 @@ import java.util.stream.Collectors;
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
-    private final UserService userService;
     private final ItemRepository itemRepository;
-    private final ItemService itemService;
 
-    private final RequestService requestService;
 
     @Override
     @Transactional
@@ -80,7 +77,7 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public BookingGetDto changeStatusOfBookingByOwner(long bookingId, long userId, boolean approved)
             throws UserConflictException, BookingExistsException, BookingStatusUpdateException {
-        userService.findUserById(userId);
+        userRepository.findById(userId);
         Optional<Booking> booking = bookingRepository.findById(bookingId);
         if (booking.isEmpty()) {
             throw new BookingExistsException("Нет бронирования " + bookingId);
@@ -104,7 +101,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public BookingGetDto getBooking(long bookingId, long userId) throws UserExistsException, BookingExistsException {
-        userService.findUserById(userId);
+        userRepository.findById(userId).orElseThrow();
         Optional<Booking> booking = bookingRepository.findById(bookingId);
         if (booking.isEmpty()) {
             throw new BookingExistsException("Нет бронирования " + bookingId);
@@ -118,7 +115,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public List<BookingGetDto> getAllBookingsByUser(int from, int size, String state, long userId) throws BookingStateException {
-        userService.findUserById(userId);
+        userRepository.findById(userId).orElseThrow();
         BookingState bookingState;
         if (from < 0 || size <= 0) {
             throw new RuntimeException("Ошибка пагинации");
@@ -163,7 +160,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public List<BookingGetDto> getAllBookingsByOwner(int from, int size, String state, long userId) throws ItemExistsException {
-        userService.findUserById(userId);
+        userRepository.findById(userId).orElseThrow();
         BookingState bookingState;
         if (from < 0 || size <= 0) {
             throw new RuntimeException("Ошибка пагинации");
@@ -179,7 +176,7 @@ public class BookingServiceImpl implements BookingService {
         } catch (IllegalArgumentException e) {
             throw new WrongStateException(state);
         }
-        if (itemService.getAllByUserId(userId).size() < 1) {
+        if (itemRepository.findAllByOwnerId(userId).isEmpty()) {
             throw new ItemExistsException("У пользователя нет вещей, id = " + userId);
         }
         List<Booking> bookingList = new ArrayList<>();

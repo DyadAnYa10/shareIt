@@ -44,7 +44,4 @@ public class Booking {
         this.status = status;
     }
 
-    public Booking(User booker) {
-        this.booker = booker;
-    }
 }

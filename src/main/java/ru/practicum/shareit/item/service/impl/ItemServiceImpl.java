@@ -23,6 +23,7 @@ import ru.practicum.shareit.request.ItemRequestRepository;
 import ru.practicum.shareit.request.exception.EntityNotExistException;
 import ru.practicum.shareit.request.exception.RequestException;
 import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 import ru.practicum.shareit.item.exception.OwnerItemException;
@@ -48,6 +49,7 @@ public class ItemServiceImpl implements ItemService {
         if (itemDto.getRequestId() != null) {
             newItem.setItemRequest(findItemRequestById(itemDto.getRequestId()));
         }
+        newItem.setOwner(user);
         return ItemMapper.toItemDto(itemRepository.save(newItem));
     }
 
@@ -128,35 +130,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getAllByUserId(long userId) {
-        User user = userService.findUserById(userId);
-
-        List<Item> items = itemRepository.findAllByOwnerId(user.getId());
-        List<ItemDto> result = new ArrayList<>();
-        fillItemDtoList(result, items, userId);
-
-        result.sort((o1, o2) -> {
-            if (o1.getNextBooking() == null && o2.getNextBooking() == null) {
-                return o1.getId().compareTo(o2.getId());
-            }
-            if (o1.getNextBooking() != null && o2.getNextBooking() == null) {
-                return -1;
-            }
-            if (o1.getNextBooking() == null && o2.getNextBooking() != null) {
-                return 1;
-            }
-            if (o1.getNextBooking().getStart().isBefore(o2.getNextBooking().getStart())) {
-                return -1;
-            }
-            if (o1.getNextBooking().getStart().isAfter(o2.getNextBooking().getStart())) {
-                return 1;
-            }
-            return 0;
-        });
-        return result;
-    }
-
-    @Override
     public List<ItemDto> searchByText(String text, int from, int size) {
         if (!StringUtils.hasLength(text)) {
             return Collections.emptyList();
@@ -203,7 +176,8 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(itemId).orElseThrow();
         User author = userService.findUserById(userId);
 
-        if (bookingRepository.findBookingsForAddComments(itemId, userId, LocalDateTime.now()).isEmpty()) {
+        if (!bookingRepository.existsBookingByItemAndBookerAndStatusNotAndStartBefore(item, author, BookingStatus.REJECTED, LocalDateTime.now())) {
+//        if (bookingRepository.findBookingsForAddComments(itemId, userId, LocalDateTime.now()).isEmpty()) {
             throw new CommentException(" Ошибка: комментарий для itemId: " + itemId);
         }
         Comment comment = CommentMapper.toModel(dto, item, author);

@@ -57,6 +57,7 @@ class ItemRequestControllerTest {
         verify(requestService).getAll(0, 10, 1L);
     }
 
+
     @SneakyThrows
     @Test
     void getForOwner_allCorrect_thenReturnOk() {
