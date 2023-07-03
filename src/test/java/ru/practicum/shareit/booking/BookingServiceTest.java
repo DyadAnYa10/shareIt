@@ -40,7 +40,7 @@ class BookingServiceTest {
 
     @Test
     @Order(0)
-    @Sql(value = { "/test-schema.sql", "/users-create-test.sql", "/item-create-test.sql" })
+    @Sql(value = {"/test-schema.sql", "/users-create-test.sql", "/item-create-test.sql"})
     @SneakyThrows
     void createTest() {
         BookingDto incomeDto = BookingDto.builder()
@@ -180,7 +180,7 @@ class BookingServiceTest {
 
     @Test
     @Order(9)
-    @Sql(value = { "/all-bookings-create-test.sql" })
+    @Sql(value = {"/all-bookings-create-test.sql"})
     void confirmNotByOwnerTest() {
         assertThrows(UserConflictException.class, () -> bookingService.changeStatusOfBookingByOwner(3L, 2L, true));
     }

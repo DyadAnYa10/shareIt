@@ -28,7 +28,7 @@ class RequestServiceTest {
 
     @Test
     @Order(0)
-    @Sql(value = { "/test-schema.sql", "/users-create-test.sql" })
+    @Sql(value = {"/test-schema.sql", "/users-create-test.sql"})
     void createTest() {
         long userId = 1L;
         ItemRequestIncomeDto incomeDto = ItemRequestIncomeDto.builder()
@@ -52,7 +52,7 @@ class RequestServiceTest {
 
     @Test
     @Order(1)
-    @Sql(value = { "/item-for-request-create-test.sql" })
+    @Sql(value = {"/item-for-request-create-test.sql"})
     void getById() {
         long requestId = 1L;
         long userId = 1L;

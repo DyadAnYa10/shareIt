@@ -14,10 +14,8 @@ import ru.practicum.shareit.booking.repository.BookingRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 @DataJpaTest
-@Sql(value = { "/test-schema.sql", "/users-create-test.sql", "/item-create-test.sql", "/all-bookings-create-test.sql"})
+@Sql(value = {"/test-schema.sql", "/users-create-test.sql", "/item-create-test.sql", "/all-bookings-create-test.sql"})
 class BookingRepoTest {
     @Autowired
     private BookingRepository bookingRepository;
@@ -33,7 +31,7 @@ class BookingRepoTest {
 
     @Test
     void findAllByBookerTest() {
-       List<Booking> bookings = bookingRepository.findByBookerIdOrderByStartDesc(bookerId, pageable);
+        List<Booking> bookings = bookingRepository.findByBookerIdOrderByStartDesc(bookerId, pageable);
         Assertions.assertThat(bookings).hasSize(3);
     }
 

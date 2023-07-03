@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@Sql(value = { "/test-schema.sql", "/exceptionHandler_setUp_test.sql" })
+@Sql(value = {"/test-schema.sql", "/exceptionHandler_setUp_test.sql"})
 class ErrorHandlingTest {
     private MockMvc mockMvc;
     private final ObjectMapper objectMapper;

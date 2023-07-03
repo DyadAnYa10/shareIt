@@ -26,12 +26,12 @@ class ItemIncomeDtoTest {
         Assertions.assertThat(dto)
                 .isPresent()
                 .hasValueSatisfying(i -> {
-                   Assertions.assertThat(i)
-                           .hasFieldOrPropertyWithValue("name", "Дрель");
-                   Assertions.assertThat(i)
-                           .hasFieldOrPropertyWithValue("description", "Простая дрель");
-                   Assertions.assertThat(i)
-                           .hasFieldOrPropertyWithValue("available", true);
+                    Assertions.assertThat(i)
+                            .hasFieldOrPropertyWithValue("name", "Дрель");
+                    Assertions.assertThat(i)
+                            .hasFieldOrPropertyWithValue("description", "Простая дрель");
+                    Assertions.assertThat(i)
+                            .hasFieldOrPropertyWithValue("available", true);
                 });
     }
 }
