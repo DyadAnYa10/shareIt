@@ -9,6 +9,7 @@ import ru.practicum.shareit.booking.exception.*;
 import ru.practicum.shareit.item.exception.ItemExistsException;
 import ru.practicum.shareit.user.exception.UserConflictException;
 import ru.practicum.shareit.user.exception.UserExistsException;
+
 @Generated
 @RestControllerAdvice("ru.practicum.shareit.booking")
 public class ErrorBookingHandler {

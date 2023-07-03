@@ -23,7 +23,6 @@ import ru.practicum.shareit.request.ItemRequestRepository;
 import ru.practicum.shareit.request.exception.EntityNotExistException;
 import ru.practicum.shareit.request.exception.RequestException;
 import ru.practicum.shareit.request.model.ItemRequest;
-import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 import ru.practicum.shareit.item.exception.OwnerItemException;
