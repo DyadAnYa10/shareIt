@@ -1,6 +1,5 @@
 package ru.practicum.shareit.booking;
 
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
@@ -159,7 +158,7 @@ class BookingMockServiceTest {
         when(bookingRepository.save(any()))
                 .thenReturn(booking);
 
-        BookingGetDto result = bookingService.changeStatusOfBookingByOwner(1L,  3L, true);
+        BookingGetDto result = bookingService.changeStatusOfBookingByOwner(1L, 3L, true);
 
         assertNotNull(result);
         assertEquals(1L, result.getId());
@@ -176,7 +175,7 @@ class BookingMockServiceTest {
 
         BookingExistsException e = assertThrows(BookingExistsException.class,
                 () -> {
-                    bookingService.changeStatusOfBookingByOwner(1L,  2L, true);
+                    bookingService.changeStatusOfBookingByOwner(1L, 2L, true);
                 });
         assertNotNull(e);
     }
@@ -198,7 +197,7 @@ class BookingMockServiceTest {
 
         BookingStatusUpdateException e = assertThrows(BookingStatusUpdateException.class,
                 () -> {
-                    bookingService.changeStatusOfBookingByOwner(1L,  3L, true);
+                    bookingService.changeStatusOfBookingByOwner(1L, 3L, true);
                 });
         assertNotNull(e);
     }
@@ -426,7 +425,7 @@ class BookingMockServiceTest {
                 .thenReturn(List.of(booking));
 
         List<BookingGetDto> result = bookingService
-                .getAllBookingsByOwner(0, 10,"ALL", 3L);
+                .getAllBookingsByOwner(0, 10, "ALL", 3L);
 
         assertNotNull(result);
         assertTrue(result.isEmpty());

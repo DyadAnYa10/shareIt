@@ -73,44 +73,36 @@ class BookingRepoTest {
 
     @Test
     void findAllWaitingByOwnerTest() {
-        List<Booking> bookings = bookingRepository.
-                findBookingByItemOwnerAndStatus(ownerId, BookingStatus.WAITING, pageable);
+        List<Booking> bookings = bookingRepository
+                .findBookingByItemOwnerAndStatus(ownerId, BookingStatus.WAITING, pageable);
         Assertions.assertThat(bookings).hasSize(1);
     }
 
     @Test
     void findAllRejectedByOwnerTest() {
-        List<Booking> bookings = bookingRepository.
-                findBookingByItemOwnerAndStatus(ownerId, BookingStatus.REJECTED, pageable);
+        List<Booking> bookings = bookingRepository
+                .findBookingByItemOwnerAndStatus(ownerId, BookingStatus.REJECTED, pageable);
         Assertions.assertThat(bookings).hasSize(1);
     }
 
     @Test
     void findAllPastByOwnerTest() {
-        List<Booking> bookings = bookingRepository.
-                findBookingByItemOwnerAndEndIsBefore(ownerId, LocalDateTime.now(), pageable);
+        List<Booking> bookings = bookingRepository
+                .findBookingByItemOwnerAndEndIsBefore(ownerId, LocalDateTime.now(), pageable);
         Assertions.assertThat(bookings).hasSize(1);
     }
 
     @Test
     void findAllFutureByOwnerTest() {
-        List<Booking> bookings = bookingRepository.
-                findBookingByItemOwnerAndStartIsAfter(ownerId, LocalDateTime.now(), pageable);
+        List<Booking> bookings = bookingRepository
+                .findBookingByItemOwnerAndStartIsAfter(ownerId, LocalDateTime.now(), pageable);
         Assertions.assertThat(bookings).hasSize(2);
     }
 
     @Test
     void findAllCurrentByOwnerTest() {
-        List<Booking> bookings = bookingRepository.
-                findBookingsByItemOwnerCurrent(ownerId, LocalDateTime.now(), pageable);
+        List<Booking> bookings = bookingRepository
+                .findBookingsByItemOwnerCurrent(ownerId, LocalDateTime.now(), pageable);
         Assertions.assertThat(bookings).isEmpty();
     }
-
-//    @Test
-//    void findToCheck() {
-//        long itemId = 2L;
-//        List<Booking> bookings = bookingRepository.findBookingsForAddComments(itemId, bookerId, LocalDateTime.now());
-//
-//        assertTrue(bookings.size() > 0);
-//    }
 }
