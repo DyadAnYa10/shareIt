@@ -33,23 +33,6 @@ public class ItemMapper {
                 .available(itemDto.getAvailable())
                 .build();
     }
-//
-//    public static Item toItem(ItemDto itemDto, ItemRequest itemRequest) {
-//        return Item.builder()
-//                .name(itemDto.getName())
-//                .id(itemDto.getId())
-//                .description(itemDto.getDescription())
-//                .owner(itemDto.getOwner())
-//                .available(itemDto.getAvailable())
-//                .itemRequest(itemRequest)
-//                .build();
-//    }
-//
-//    public static List<ItemDto> toItemDtoList(List<Item> items) {
-//        return items.stream()
-//                .map(ItemMapper::toItemDto)
-//                .collect(Collectors.toList());
-//    }
 
     public static ItemDto toDto(Item item, Booking lastBooking, Booking nextBooking, List<CommentDto> comments) {
         return ItemDto.builder()
