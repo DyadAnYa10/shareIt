@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,8 @@ import ru.practicum.shareit.item.exception.ItemExistsException;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.request.exception.EntityNotExistException;
+import ru.practicum.shareit.request.exception.RequestException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.exception.UserConflictException;
 import ru.practicum.shareit.user.exception.UserExistsException;
@@ -24,6 +27,7 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -82,6 +86,18 @@ class ItemServiceTest {
     }
 
     @Test
+    void createItemTest_returnThrow() {
+        itemDto.setRequestId(5L);
+        UserDto owner = userService.create(ownerDto);
+
+        EntityNotExistException exception = Assertions.assertThrows(EntityNotExistException.class, () -> {
+            itemService.create(itemDto, owner.getId());
+        });
+        assertEquals(exception.getMessage(), "Запрос c id = 5 не существует");
+
+    }
+
+    @Test
     void findAllItemsByUserIdTest() {
         UserDto owner = userService.create(ownerDto);
 
@@ -94,6 +110,18 @@ class ItemServiceTest {
 
         assertNotNull(itemResponseDtoList);
         assertEquals(2, itemResponseDtoList.size());
+    }
+
+    @Test
+    void findAllItemsByUserIdTest_returnThrow() {
+        UserDto owner = userService.create(ownerDto);
+
+        Long userId = owner.getId();
+        RequestException exception = Assertions.assertThrows(RequestException.class, () -> {
+            itemService.getAllByUserId(-1, -1, userId);
+        });
+
+        assertEquals(exception.getMessage(), "Ошибка пагинации");
     }
 
     @Test
@@ -146,6 +174,11 @@ class ItemServiceTest {
     }
 
     @Test
+    void searchByText_returnEmptyList() {
+        assertEquals(itemService.searchByText("", 0, 10), Collections.emptyList());
+    }
+
+    @Test
     void addCommentTest() throws UserExistsException, ItemExistsException, UserConflictException, BookingCreateException, CommentException {
         UserDto owner = userService.create(ownerDto);
         UserDto booker = userService.create(bookerDto);
@@ -168,6 +201,22 @@ class ItemServiceTest {
         assertNotNull(commentResponseDto.getId());
         assertEquals(commentDto.getText(), commentResponseDto.getText());
         assertEquals(booker.getName(), commentResponseDto.getAuthorName());
+    }
+
+    @Test
+    void addCommentTest_returnException() {
+        UserDto owner = userService.create(ownerDto);
+
+        UserDto booker = userService.create(bookerDto);
+        ItemDto item = itemService.create(itemDto, owner.getId());
+
+        CommentDto commentDto = new CommentDto();
+        commentDto.setText("");
+
+        CommentException exception = Assertions.assertThrows(CommentException.class, () -> {
+            itemService.createComment(commentDto, item.getId(), booker.getId());
+        });
+        assertEquals(exception.getMessage(), "Ошибка: пустой комментарий");
     }
 
 }

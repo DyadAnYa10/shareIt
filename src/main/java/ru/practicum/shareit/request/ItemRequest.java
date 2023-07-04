@@ -7,9 +7,6 @@ import ru.practicum.shareit.utils.Create;
 
 import javax.validation.constraints.NotBlank;
 
-/**
- * TODO Sprint add-item-requests.
- */
 @Builder(toBuilder = true)
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)

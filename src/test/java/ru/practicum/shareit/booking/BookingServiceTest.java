@@ -29,6 +29,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
@@ -61,6 +62,24 @@ class BookingServiceTest {
                     assertThat(i.getBooker()).hasFieldOrPropertyWithValue("id", 2L);
                     assertThat(i).hasFieldOrPropertyWithValue("status", BookingStatus.WAITING);
                 });
+    }
+
+    @Test
+    @Order(12)
+    @Sql(value = {"/test-schema.sql", "/users-create-test.sql", "/item-create-test.sql"})
+    @SneakyThrows
+    void createTest_returnThrow() {
+        BookingDto incomeDto = BookingDto.builder()
+                .itemId(1L)
+                .start(null)
+                .end(null)
+                .build();
+
+        BookingCreateException exception = assertThrows(BookingCreateException.class, () -> {
+            bookingService.createBooking(incomeDto, 2L);
+        });
+        assertEquals(exception.getMessage(), "Ошибка создания бронирования: start = " + incomeDto.getStart() + ", " +
+                "end = " + incomeDto.getEnd());
     }
 
     @Test
@@ -235,6 +254,20 @@ class BookingServiceTest {
     }
 
     @Test
+    @Order(13)
+    void getAllByOwnerTest_returnThrow() throws ItemExistsException, BookingStateException {
+        int from = -1;
+        int size = -1;
+        BookingState state = BookingState.ALL;
+        long userId = 1L;
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            bookingService.getAllBookingsByOwner(from, size, String.valueOf(state), userId);
+        });
+        assertEquals(exception.getMessage(), "Ошибка пагинации");
+    }
+
+    @Test
     @Order(11)
     void getAllByBookerTest() throws UserExistsException, BookingStateException {
         int from = 0;
@@ -269,5 +302,19 @@ class BookingServiceTest {
         bookings = bookingService.getAllBookingsByUser(from, size, String.valueOf(state), userId);
         Assertions.assertThat(bookings)
                 .hasSize(2);
+    }
+
+    @Test
+    @Order(14)
+    void getAllByBookerTest_returnThrow() throws ItemExistsException, BookingStateException {
+        int from = -1;
+        int size = -1;
+        BookingState state = BookingState.ALL;
+        long userId = 2L;
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            bookingService.getAllBookingsByUser(from, size, String.valueOf(state), userId);
+        });
+        assertEquals(exception.getMessage(), "Ошибка пагинации");
     }
 }
