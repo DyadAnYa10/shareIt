@@ -13,9 +13,9 @@ public interface ItemService {
 
     ItemDto updateById(ItemDto itemDto, Long id, Long userId);
 
-    List<ItemDto> getAllByUserId(Long userId);
+    List<ItemDto> getAllByUserId(int from, int size, long userId);
 
-    List<ItemDto> searchByText(String text, Long userId);
+    List<ItemDto> searchByText(String text, int from, int size);
 
     CommentDto createComment(CommentDto dto, Long itemId, Long userId) throws CommentException;
 }

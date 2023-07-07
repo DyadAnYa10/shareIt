@@ -14,11 +14,14 @@ import ru.practicum.shareit.item.exception.ItemExistsException;
 import ru.practicum.shareit.user.exception.UserConflictException;
 import ru.practicum.shareit.user.exception.UserExistsException;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
+@Validated
 public class BookingController {
     private final BookingService bookingService;
 
@@ -45,15 +48,20 @@ public class BookingController {
 
     @GetMapping()
     public List<BookingGetDto> getAllBookingsByUser(@RequestHeader("X-Sharer-User-Id") long userId,
+                                                    @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                                    @RequestParam(defaultValue = "10") @Positive int size,
                                                     @RequestParam(value = "state", defaultValue = "ALL") String state)
             throws UserExistsException, BookingStateException {
-        return bookingService.getAllBookingsByUser(state, userId);
+        return bookingService.getAllBookingsByUser(from, size, state, userId);
     }
+
 
     @GetMapping("/owner")
     public List<BookingGetDto> getAllBookingsByUserError(@RequestHeader("X-Sharer-User-Id") long userId,
-                                                         @RequestParam(value = "state", defaultValue = "ALL") String state)
+                                                         @RequestParam(value = "state", defaultValue = "ALL") String state,
+                                                         @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                                         @RequestParam(defaultValue = "10") @Positive int size)
             throws ItemExistsException, BookingStateException {
-        return bookingService.getAllBookingsByOwner(state, userId);
+        return bookingService.getAllBookingsByOwner(from, size, state, userId);
     }
 }

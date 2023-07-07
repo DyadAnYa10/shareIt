@@ -8,11 +8,10 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class BookingDto {
     @NotNull(groups = {Create.class, Update.class})
     private Long itemId;
@@ -20,6 +19,6 @@ public class BookingDto {
     @Future
     private LocalDateTime start;
     @Future
-    @NotNull(groups = { Update.class})
+    @NotNull(groups = {Update.class})
     private LocalDateTime end;
 }

@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -19,11 +18,7 @@ public class User {
     private Long id;
     @Column(name = "name")
     private String name;
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
-    public User(String name, String email) {
-        this.name = name;
-        this.email = email;
-    }
 }
