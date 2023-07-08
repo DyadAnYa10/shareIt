@@ -24,7 +24,7 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping()
-    public BookingGetDto createBooking( @RequestBody BookingDto bookingDto,
+    public BookingGetDto createBooking(@RequestBody BookingDto bookingDto,
                                        @RequestHeader("X-Sharer-User-Id") Long userId)
             throws UserExistsException, ItemExistsException, UserConflictException, BookingCreateException {
         return bookingService.createBooking(bookingDto, userId);
