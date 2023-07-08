@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.practicum.gateway.user.UserClient;
 import ru.practicum.gateway.user.UserController;
-import ru.practicum.gateway.user.dto.UserDTO;
+import ru.practicum.gateway.user.dto.UserDto;
 
 import java.nio.charset.StandardCharsets;
 
@@ -33,7 +33,7 @@ public class UserControllerTest {
     UserClient userClient;
 
 
-    UserDTO userDto = new UserDTO(1L, "user", "user@user.com");
+    UserDto userDto = new UserDto(1L, "user", "user@user.com");
 
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext) {
@@ -73,7 +73,7 @@ public class UserControllerTest {
 
     @Test
     public void shouldAddUserPostWhenFailName() throws Exception {
-        UserDTO user = UserDTO.builder()
+        UserDto user = UserDto.builder()
                 .id(2L)
                 .name("")
                 .email("user@user.com")
@@ -89,7 +89,7 @@ public class UserControllerTest {
 
     @Test
     public void shouldAdUserPostWhenFailEmail() throws Exception {
-        UserDTO user = new UserDTO(2L, "user", "");
+        UserDto user = new UserDto(2L, "user", "");
         String jsonUser = objectMapper.writeValueAsString(user);
 
         mockMvc.perform(post("/users")
@@ -101,7 +101,7 @@ public class UserControllerTest {
 
     @Test
     public void shouldUpdatePatchUserWhenStatus200() throws Exception {
-        UserDTO user = new UserDTO(1L, "update", "update@user.com");
+        UserDto user = new UserDto(1L, "update", "update@user.com");
         String jsonUser = objectMapper.writeValueAsString(userDto);
 
         mockMvc.perform(patch("/users/1")

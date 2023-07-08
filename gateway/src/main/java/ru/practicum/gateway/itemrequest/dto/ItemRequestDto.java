@@ -1,4 +1,4 @@
-package ru.practicum.gateway.item.dto;
+package ru.practicum.gateway.itemrequest.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,24 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ItemDTO {
+public class ItemRequestDto {
 
-    private Long id;
-
-    @NotBlank
-    private String name;
-
+    @Size(max = 100)
     @NotBlank
     private String description;
-
-    @NotNull
-    private Boolean available;
-
-    private Long requestId;
 }

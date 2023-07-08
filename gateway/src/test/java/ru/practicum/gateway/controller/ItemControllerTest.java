@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.gateway.item.ItemClient;
 import ru.practicum.gateway.item.ItemController;
-import ru.practicum.gateway.item.dto.ItemDTO;
+import ru.practicum.gateway.item.dto.ItemDto;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,13 +25,13 @@ public class ItemControllerTest {
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
-    private ItemDTO itemDto;
+    private ItemDto itemDto;
     @MockBean
     private ItemClient itemClient;
 
     @BeforeEach
     public void setUp() throws Exception {
-        itemDto = ItemDTO.builder()
+        itemDto = ItemDto.builder()
                 .id(1L)
                 .name("Дрель")
                 .description("Простая дрель")

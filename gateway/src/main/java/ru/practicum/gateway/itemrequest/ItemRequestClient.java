@@ -8,7 +8,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.gateway.client.BaseClient;
-import ru.practicum.gateway.itemrequest.dto.ItemRequestDTO;
+import ru.practicum.gateway.itemrequest.dto.ItemRequestDto;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public class ItemRequestClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> createRequest(Long userId, ItemRequestDTO itemRequestDto) {
+    public ResponseEntity<Object> createRequest(Long userId, ItemRequestDto itemRequestDto) {
         return post("", userId, itemRequestDto);
     }
 

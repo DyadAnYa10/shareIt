@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.gateway.item.dto.CommentDTO;
-import ru.practicum.gateway.item.dto.ItemDTO;
+import ru.practicum.gateway.item.dto.CommentDto;
+import ru.practicum.gateway.item.dto.ItemDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -27,7 +27,7 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<Object> createItem(@RequestHeader(USER_ID_HEADER) Long userId,
-                                             @RequestBody @Valid ItemDTO dto) {
+                                             @RequestBody @Valid ItemDto dto) {
         log.info("Получен запрос к эндпоинту /items create с headers {}", userId);
         return itemClient.createItem(dto, userId);
     }
@@ -50,7 +50,7 @@ public class ItemController {
     @PatchMapping("/{id}")
     public ResponseEntity<Object> updateItem(@RequestHeader(USER_ID_HEADER) Long userId,
                                              @PathVariable("id") Long itemId,
-                                             @RequestBody ItemDTO itemDto) {
+                                             @RequestBody ItemDto itemDto) {
         log.info("Получен запрос к эндпоинту: /items update с ItemId={} с headers {}", itemId, userId);
         return itemClient.updateItem(itemId, userId, itemDto);
     }
@@ -69,7 +69,7 @@ public class ItemController {
     @PostMapping("/{itemId}/comment")
     public ResponseEntity<Object> addComment(@RequestHeader(USER_ID_HEADER) Long userId,
                                              @PathVariable("itemId") @Positive Long itemId,
-                                             @Valid @RequestBody CommentDTO comment) {
+                                             @Valid @RequestBody CommentDto comment) {
         log.info("Получен запрос к эндпоинту /items{itemId}/comment addComment с headers {}, с itemId {}", userId, itemId);
         return itemClient.addComment(itemId, userId, comment);
     }

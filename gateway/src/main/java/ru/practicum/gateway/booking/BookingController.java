@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.gateway.booking.dto.BookingRequestDTO;
+import ru.practicum.gateway.booking.dto.BookingGetDto;
 import ru.practicum.gateway.exception.UnknownBookingException;
 
 import javax.validation.Valid;
@@ -36,7 +36,7 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<Object> createBooking(@RequestHeader(USER_ID_HEADER) Long userId,
-                                                @RequestBody @Valid BookingRequestDTO requestDto) {
+                                                @RequestBody @Valid BookingGetDto requestDto) {
         log.info("Creating booking {}, userId={}", requestDto, userId);
         return bookingClient.createBooking(userId, requestDto);
     }

@@ -7,8 +7,8 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.gateway.client.BaseClient;
-import ru.practicum.gateway.item.dto.CommentDTO;
-import ru.practicum.gateway.item.dto.ItemDTO;
+import ru.practicum.gateway.item.dto.CommentDto;
+import ru.practicum.gateway.item.dto.ItemDto;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public class ItemClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> createItem(ItemDTO itemDto, Long userId) {
+    public ResponseEntity<Object> createItem(ItemDto itemDto, Long userId) {
         return post("", userId, itemDto);
     }
 
@@ -42,7 +42,7 @@ public class ItemClient extends BaseClient {
         return get("/" + itemId, userId);
     }
 
-    public ResponseEntity<Object> updateItem(Long itemId, Long userId, ItemDTO itemDto) {
+    public ResponseEntity<Object> updateItem(Long itemId, Long userId, ItemDto itemDto) {
         return patch("/" + itemId, userId, itemDto);
     }
 
@@ -55,7 +55,7 @@ public class ItemClient extends BaseClient {
         return get("/search?text={text}&from={from}&size={size}", parameters);
     }
 
-    public ResponseEntity<Object> addComment(Long itemId, Long userId, CommentDTO commentDto) {
+    public ResponseEntity<Object> addComment(Long itemId, Long userId, CommentDto commentDto) {
         return post("/" + itemId + "/comment", userId, commentDto);
     }
 

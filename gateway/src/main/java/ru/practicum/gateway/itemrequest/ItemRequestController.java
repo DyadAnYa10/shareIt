@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.gateway.itemrequest.dto.ItemRequestDTO;
+import ru.practicum.gateway.itemrequest.dto.ItemRequestDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -24,7 +24,7 @@ public class ItemRequestController {
 
     @PostMapping
     public ResponseEntity<Object> createRequest(@RequestHeader(USER_ID_HEADER) @Positive Long userId,
-                                                @Valid @RequestBody ItemRequestDTO itemRequestDto) {
+                                                @Valid @RequestBody ItemRequestDto itemRequestDto) {
         log.info("Получен запрос к эндпоинту /requests create с headers {}", userId);
         return requestClient.createRequest(userId, itemRequestDto);
     }

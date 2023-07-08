@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.gateway.user.dto.UserDTO;
+import ru.practicum.gateway.user.dto.UserDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -21,7 +21,7 @@ public class UserController {
     private final UserClient userClient;
 
     @PostMapping
-    public ResponseEntity<Object> createUser(@Valid @RequestBody UserDTO user) {
+    public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto user) {
         log.info("Получен запрос к эндпоинту /users create");
         return userClient.createUser(user);
     }
@@ -40,7 +40,7 @@ public class UserController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable("id") Long userId,
-                                             @RequestBody UserDTO userDto) {
+                                             @RequestBody UserDto userDto) {
         log.info("Получен запрос к эндпоинту: /users update с id={}", userId);
         return userClient.updateUser(userId, userDto);
     }

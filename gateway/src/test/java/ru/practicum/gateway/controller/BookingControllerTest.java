@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.gateway.booking.BookingClient;
 import ru.practicum.gateway.booking.BookingController;
-import ru.practicum.gateway.booking.dto.BookingRequestDTO;
+import ru.practicum.gateway.booking.dto.BookingGetDto;
 
 import java.time.LocalDateTime;
 
@@ -27,7 +27,7 @@ public class BookingControllerTest {
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
-    private BookingRequestDTO bookingDto;
+    private BookingGetDto bookingDto;
     LocalDateTime start;
     LocalDateTime end;
     @MockBean
@@ -39,7 +39,7 @@ public class BookingControllerTest {
         start = LocalDateTime.now().plusMinutes(1).withNano(000);
         end = start.plusDays(1).withNano(000);
 
-        bookingDto = new BookingRequestDTO(1L, 1L, start, end, null);
+        bookingDto = new BookingGetDto(1L, 1L, start, end, null);
     }
 
     @Test

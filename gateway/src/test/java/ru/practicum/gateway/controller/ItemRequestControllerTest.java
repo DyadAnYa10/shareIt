@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.gateway.itemrequest.ItemRequestClient;
 import ru.practicum.gateway.itemrequest.ItemRequestController;
-import ru.practicum.gateway.itemrequest.dto.ItemRequestDTO;
+import ru.practicum.gateway.itemrequest.dto.ItemRequestDto;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,13 +25,13 @@ public class ItemRequestControllerTest {
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
-    private ItemRequestDTO itemRequestDto;
+    private ItemRequestDto itemRequestDto;
     @MockBean
     private ItemRequestClient itemRequestClient;
 
     @BeforeEach
     public void setUp() throws Exception {
-        itemRequestDto = new ItemRequestDTO("Хотел бы воспользоваться щёткой для обуви");
+        itemRequestDto = new ItemRequestDto("Хотел бы воспользоваться щёткой для обуви");
     }
 
     @Test
@@ -48,7 +48,7 @@ public class ItemRequestControllerTest {
 
     @Test
     public void shouldItemRequestWithEmptyDescription() throws Exception {
-        ItemRequestDTO item = new ItemRequestDTO(null);
+        ItemRequestDto item = new ItemRequestDto(null);
         String jsonItem = objectMapper.writeValueAsString(item);
         Long userId = 1L;
 
