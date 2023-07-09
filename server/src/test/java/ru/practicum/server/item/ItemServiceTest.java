@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.server.booking.dto.BookingDto;
 import ru.practicum.server.booking.service.BookingService;
 import ru.practicum.server.exception.NotFoundException;
-import ru.practicum.server.exception.ValidateCommentException;
 import ru.practicum.server.item.dto.CommentDto;
 import ru.practicum.server.item.dto.ItemDto;
 import ru.practicum.server.item.mapper.ItemMapper;

@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.practicum.server.request.dto.ItemRequestDto;
-import ru.practicum.server.request.dto.ItemRequestIncomeDto;
 import ru.practicum.server.request.dto.ItemRequestLongDto;
 
 import java.util.List;

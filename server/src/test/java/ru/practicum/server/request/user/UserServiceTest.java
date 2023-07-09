@@ -15,7 +15,6 @@ import ru.practicum.server.user.dto.UserDto;
 import ru.practicum.server.user.service.UserService;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;

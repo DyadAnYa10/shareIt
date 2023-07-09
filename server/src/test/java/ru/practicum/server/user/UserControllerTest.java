@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.practicum.server.exception.NotFoundException;
 import ru.practicum.server.user.dto.UserDto;
 import ru.practicum.server.user.service.UserService;
 

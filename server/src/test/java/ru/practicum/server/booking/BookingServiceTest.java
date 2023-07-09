@@ -21,7 +21,6 @@ import ru.practicum.server.exception.ValidateBookingException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
