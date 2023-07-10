@@ -1,0 +1,315 @@
+package ru.practicum.server.booking;
+
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit4.SpringRunner;
+import ru.practicum.server.booking.dto.BookingDto;
+import ru.practicum.server.booking.dto.BookingGetDto;
+import ru.practicum.server.booking.service.BookingService;
+import ru.practicum.server.exception.BookingStateException;
+import ru.practicum.server.exception.NotFoundException;
+import ru.practicum.server.exception.ValidateBookingException;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
+class BookingServiceTest {
+    private final BookingService bookingService;
+
+    @Test
+    @Order(0)
+    @Sql(value = {"/test-schema.sql", "/users-create-test.sql", "/item-create-test.sql"})
+    @SneakyThrows
+    void createTest() {
+        BookingDto incomeDto = BookingDto.builder()
+                .itemId(1L)
+                .start(LocalDateTime.now().plusDays(1))
+                .end(LocalDateTime.now().plusDays(2))
+                .build();
+
+        Optional<BookingGetDto> bookingDto = Optional.of(bookingService.createBooking(incomeDto, 2L));
+
+        assertThat(bookingDto)
+                .isPresent()
+                .hasValueSatisfying(i -> {
+                    assertThat(i).hasFieldOrPropertyWithValue("id", 1L);
+                    assertThat(i).hasFieldOrProperty("item");
+                    assertThat(i.getItem()).hasFieldOrPropertyWithValue("id", 1L);
+                    assertThat(i).hasFieldOrProperty("booker");
+                    assertThat(i.getBooker()).hasFieldOrPropertyWithValue("id", 2L);
+                    assertThat(i).hasFieldOrPropertyWithValue("status", BookingStatus.WAITING);
+                });
+    }
+
+    @Test
+    @Order(12)
+    @Sql(value = {"/test-schema.sql", "/users-create-test.sql", "/item-create-test.sql"})
+    @SneakyThrows
+    void createTest_returnThrow() {
+        BookingDto incomeDto = BookingDto.builder()
+                .itemId(1L)
+                .start(null)
+                .end(null)
+                .build();
+
+        ValidateBookingException exception = assertThrows(ValidateBookingException.class, () -> {
+            bookingService.createBooking(incomeDto, 2L);
+        });
+        assertEquals(exception.getMessage(), "Ошибка создания бронирования: start = " + incomeDto.getStart() + ", " +
+                "end = " + incomeDto.getEnd());
+    }
+
+    @Test
+    @Order(1)
+    @SneakyThrows
+    void confirmTest() {
+        Optional<BookingGetDto> bookingDto = Optional.of(bookingService.changeStatusOfBookingByOwner(1L, 1L, true));
+
+        assertThat(bookingDto)
+                .isPresent()
+                .hasValueSatisfying(i -> {
+                    assertThat(i).hasFieldOrPropertyWithValue("id", 1L);
+                    assertThat(i).hasFieldOrProperty("item");
+                    assertThat(i.getItem()).hasFieldOrPropertyWithValue("id", 1L);
+                    assertThat(i).hasFieldOrProperty("booker");
+                    assertThat(i.getBooker()).hasFieldOrPropertyWithValue("id", 2L);
+                    assertThat(i).hasFieldOrPropertyWithValue("status", BookingStatus.APPROVED);
+                });
+    }
+
+    @Test
+    @Order(2)
+    @SneakyThrows
+    void getByIdTest() {
+        Optional<BookingGetDto> bookingDto = Optional.of(bookingService.getBooking(1L, 2L));
+
+        assertThat(bookingDto)
+                .isPresent()
+                .hasValueSatisfying(i -> {
+                    assertThat(i).hasFieldOrPropertyWithValue("id", 1L);
+                    assertThat(i).hasFieldOrProperty("item");
+                    assertThat(i.getItem()).hasFieldOrPropertyWithValue("id", 1L);
+                    assertThat(i).hasFieldOrProperty("booker");
+                    assertThat(i.getBooker()).hasFieldOrPropertyWithValue("id", 2L);
+                    assertThat(i).hasFieldOrPropertyWithValue("status", BookingStatus.APPROVED);
+                });
+    }
+
+    @Test
+    @Order(3)
+    void getByIdFailTest() {
+        assertThrows(NotFoundException.class, () -> bookingService.getBooking(1L, 3L));
+    }
+
+    @Test
+    @Order(4)
+    void rejectFailTest() {
+        assertThrows(ValidateBookingException.class, () -> bookingService.changeStatusOfBookingByOwner(1L, 1L, true));
+    }
+
+    @Test
+    @Order(5)
+    void getByIdNotExistTest() {
+        assertThrows(NotFoundException.class, () -> bookingService.getBooking(10L, 1L));
+    }
+
+    @Test
+    @Order(6)
+    void createFailTest() {
+        BookingDto incomeDto = BookingDto.builder()
+                .itemId(2L)
+                .start(LocalDateTime.now().plusDays(1))
+                .end(LocalDateTime.now().plusDays(2))
+                .build();
+
+        assertThrows(ValidateBookingException.class, () -> bookingService.createBooking(incomeDto, 2L));
+    }
+
+    @Test
+    @Order(7)
+    @SneakyThrows
+    void rejectTest() {
+        BookingDto incomeDto = BookingDto.builder()
+                .itemId(3L)
+                .start(LocalDateTime.now().plusDays(1))
+                .end(LocalDateTime.now().plusDays(2))
+                .build();
+        bookingService.createBooking(incomeDto, 2L);
+
+        Optional<BookingGetDto> bookingDto = Optional.of(bookingService.changeStatusOfBookingByOwner(2L, 1L, false));
+
+        assertThat(bookingDto)
+                .isPresent()
+                .hasValueSatisfying(i -> {
+                    assertThat(i).hasFieldOrPropertyWithValue("id", 2L);
+                    assertThat(i).hasFieldOrProperty("item");
+                    assertThat(i.getItem()).hasFieldOrPropertyWithValue("id", 3L);
+                    assertThat(i).hasFieldOrProperty("booker");
+                    assertThat(i.getBooker()).hasFieldOrPropertyWithValue("id", 2L);
+                    assertThat(i).hasFieldOrPropertyWithValue("status", BookingStatus.REJECTED);
+                });
+    }
+
+    @Test
+    @Order(8)
+    void createWithNotExistItemTest() {
+        BookingDto incomeDto = BookingDto.builder()
+                .itemId(100L)
+                .start(LocalDateTime.now().plusDays(1))
+                .end(LocalDateTime.now().plusDays(2))
+                .build();
+
+        assertThrows(NotFoundException.class, () -> bookingService.createBooking(incomeDto, 2L));
+    }
+
+    @Test
+    @Order(8)
+    void createWithNotExistUserTest() {
+        BookingDto incomeDto = BookingDto.builder()
+                .itemId(1L)
+                .start(LocalDateTime.now().plusDays(1))
+                .end(LocalDateTime.now().plusDays(2))
+                .build();
+
+        assertThrows(NotFoundException.class, () -> bookingService.createBooking(incomeDto, 200L));
+    }
+
+//    @Test
+//    @Order(9)
+//    @Sql(value = {"/src/test/resources/all-bookings-create-test.sql"})
+//    void confirmNotByOwnerTest() {
+//        assertThrows(UserConflictException.class, () -> bookingService.changeStatusOfBookingByOwner(3L, 2L, true));
+//    }
+
+    @Test
+    @Order(10)
+    void createFromUserTest() {
+        BookingDto incomeDto = BookingDto.builder()
+                .itemId(1L)
+                .start(LocalDateTime.now().plusDays(1))
+                .end(LocalDateTime.now().plusDays(2))
+                .build();
+
+        assertThrows(NotFoundException.class, () -> bookingService.createBooking(incomeDto, 1L));
+    }
+
+    @Test
+    @Order(11)
+    void getAllByOwnerTest() throws BookingStateException {
+        int from = 0;
+        int size = 10;
+        BookingState state = BookingState.ALL;
+        long userId = 1L;
+        List<BookingGetDto> bookings = bookingService.getAllBookingsByOwner(from, size, String.valueOf(state), userId);
+        Assertions.assertThat(bookings)
+                .hasSize(2);
+
+        state = BookingState.CURRENT;
+        bookings = bookingService.getAllBookingsByOwner(from, size, String.valueOf(state), userId);
+        Assertions.assertThat(bookings)
+                .isEmpty();
+
+        state = BookingState.PAST;
+        bookings = bookingService.getAllBookingsByOwner(from, size, String.valueOf(state), userId);
+        Assertions.assertThat(bookings)
+                .hasSize(0);
+
+        state = BookingState.FUTURE;
+        bookings = bookingService.getAllBookingsByOwner(from, size, String.valueOf(state), userId);
+        Assertions.assertThat(bookings)
+                .hasSize(2);
+
+        state = BookingState.WAITING;
+        bookings = bookingService.getAllBookingsByOwner(from, size, String.valueOf(state), userId);
+        Assertions.assertThat(bookings)
+                .hasSize(0);
+
+        state = BookingState.REJECTED;
+        bookings = bookingService.getAllBookingsByOwner(from, size, String.valueOf(state), userId);
+        Assertions.assertThat(bookings)
+                .hasSize(1);
+    }
+
+    @Test
+    @Order(13)
+    void getAllByOwnerTest_returnThrow() {
+        int from = -1;
+        int size = -1;
+        BookingState state = BookingState.ALL;
+        long userId = 1L;
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            bookingService.getAllBookingsByOwner(from, size, String.valueOf(state), userId);
+        });
+        assertEquals(exception.getMessage(), "Ошибка пагинации");
+    }
+
+    @Test
+    @Order(11)
+    void getAllByBookerTest() throws BookingStateException {
+        int from = 0;
+        int size = 10;
+        BookingState state = BookingState.ALL;
+        long userId = 2L;
+        List<BookingGetDto> bookings = bookingService.getAllBookingsByUser(from, size, String.valueOf(state), userId);
+        Assertions.assertThat(bookings)
+                .hasSize(2);
+
+        state = BookingState.CURRENT;
+        bookings = bookingService.getAllBookingsByUser(from, size, String.valueOf(state), userId);
+        Assertions.assertThat(bookings)
+                .isEmpty();
+
+        state = BookingState.PAST;
+        bookings = bookingService.getAllBookingsByUser(from, size, String.valueOf(state), userId);
+        Assertions.assertThat(bookings)
+                .hasSize(0);
+
+        state = BookingState.FUTURE;
+        bookings = bookingService.getAllBookingsByUser(from, size, String.valueOf(state), userId);
+        Assertions.assertThat(bookings)
+                .hasSize(2);
+
+        state = BookingState.WAITING;
+        bookings = bookingService.getAllBookingsByUser(from, size, String.valueOf(state), userId);
+        Assertions.assertThat(bookings)
+                .hasSize(0);
+
+        state = BookingState.REJECTED;
+        bookings = bookingService.getAllBookingsByUser(from, size, String.valueOf(state), userId);
+        Assertions.assertThat(bookings)
+                .hasSize(1);
+    }
+
+    @Test
+    @Order(14)
+    void getAllByBookerTest_returnThrow() {
+        int from = -1;
+        int size = -1;
+        BookingState state = BookingState.ALL;
+        long userId = 2L;
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            bookingService.getAllBookingsByUser(from, size, String.valueOf(state), userId);
+        });
+        assertEquals(exception.getMessage(), "Ошибка пагинации");
+    }
+}
