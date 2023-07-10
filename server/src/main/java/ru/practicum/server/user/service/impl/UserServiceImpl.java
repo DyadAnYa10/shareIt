@@ -30,22 +30,6 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toListUserDtos(userRepository.findAll());
     }
 
-//    @Override
-//    public UserDto updateUser(UserDto userDto, Long userId) {
-//        User foundUser = userRepository.findById(userId)
-//                .orElseThrow(() -> new NotFoundException(String.format("User with id='%S' not found", userId)));
-//
-//        if (userDto.getEmail() != null && !Objects.equals(userDto.getEmail(), foundUser.getEmail())) {
-//            checkExistEmail(userDto.getEmail());
-//            foundUser.setEmail(userDto.getEmail());
-//        }
-//
-//        if (userDto.getName() != null) {
-//            foundUser.setName(userDto.getName());
-//        }
-//        return UserMapper.toUserDto(userRepository.save(foundUser));
-//    }
-
     @Override
     @Transactional
     public UserDto updateUser(UserDto userDTO, Long userId) {
@@ -67,14 +51,6 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
-
-//    private void checkExistEmail(String email) {
-//        Optional<User> userFromBD = userRepository.findUserByEmail(email);
-//        if (userFromBD.isPresent()) {
-//            String error = String.format("Email %s already exist", email);
-//            throw new ExistEmailException(error);
-//        }
-//    }
 
     private User patchUser(UserDto patch, Long userId) {
         UserDto entry = getUserById(userId);
